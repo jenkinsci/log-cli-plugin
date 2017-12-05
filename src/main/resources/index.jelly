@@ -1,0 +1,4 @@
+<?jelly escape-by-default='true'?>
+<div>
+    Adds a CLI command to tail a Jenkins logger.
+</div>

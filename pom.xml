@@ -7,7 +7,7 @@
         <version>2.33</version>
         <relativePath />
     </parent>
-    <artifactId>log-cli-plugin</artifactId>
+    <artifactId>log-cli</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>hpi</packaging>
     <properties>

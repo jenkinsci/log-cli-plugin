@@ -24,6 +24,7 @@
 
 package org.jenkinsci.plugins.log_cli;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.Extension;
 import hudson.cli.CLICommand;
 import java.util.logging.Handler;
@@ -44,6 +45,7 @@ import org.kohsuke.args4j.Option;
         return "Tail a Jenkins system log.";
     }
 
+    @SuppressFBWarnings(value="LG_LOST_LOGGER_DUE_TO_WEAK_REFERENCE", justification="Holding a local variable the whole time.")
     @Override protected int run() throws Exception {
         Logger logger = Logger.getLogger(name);
         Level oldLevel = logger.getLevel();

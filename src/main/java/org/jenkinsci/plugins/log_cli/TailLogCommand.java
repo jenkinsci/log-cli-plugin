@@ -32,6 +32,7 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
+import jenkins.model.Jenkins;
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
 
@@ -47,6 +48,7 @@ import org.kohsuke.args4j.Option;
 
     @SuppressFBWarnings(value="LG_LOST_LOGGER_DUE_TO_WEAK_REFERENCE", justification="Holding a local variable the whole time.")
     @Override protected int run() throws Exception {
+        Jenkins.getInstance().checkPermission(Jenkins.ADMINISTER);
         Logger logger = Logger.getLogger(name);
         Level oldLevel = logger.getLevel();
         Handler handler = new StreamHandler(stdout, new SupportLogFormatter()) {

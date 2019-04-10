@@ -27,6 +27,7 @@ package org.jenkinsci.plugins.log_cli;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.Extension;
 import hudson.cli.CLICommand;
+import io.jenkins.lib.support_log_formatter.SupportLogFormatter;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;

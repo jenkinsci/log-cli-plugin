@@ -2,7 +2,7 @@ stage('all') {
     node('windock') {
         withEnv(["MVN=${tool('mvn')}"]) {
             bat($/
-                docker run --rm -v %MVN%:c:\mvn openjdk:8-windowsservercore-1809 cmd /c dir /s /b \mvn
+                docker run --rm -v %MVN%:c:\mvn openjdk:8-windowsservercore-1809 cmd /c \mvn\bin\mvn -version
             /$)
         }
     }

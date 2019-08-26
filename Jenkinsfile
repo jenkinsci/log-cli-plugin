@@ -6,7 +6,8 @@ stage('all') {
         checkout scm
         withEnv(["WSTMP=$tmp"]) {
             bat($/
-                docker run --rm -v %CD%:c:\ws -v %WSTMP%:c:\wstmp -v m2repo:C:\Users\ContainerAdministrator\.m2\repository jenkins4eval/maven-windows-jdk-8 cmd /c mvn -B -s c:\wstmp\settings-azure.xml -f \ws --show-version help:evaluate -Dexpression=settings.localRepository clean verify
+                docker run --rm -v %CD%:c:\ws -v %WSTMP%:c:\wstmp -v m2repo:C:\Users\ContainerAdministrator\.m2\repository jenkins4eval/maven-windows-jdk-8 cmd /c dir C:\Users\ContainerAdministrator\.m2\repository
+                docker run --rm -v %CD%:c:\ws -v %WSTMP%:c:\wstmp -v m2repo:C:\Users\ContainerAdministrator\.m2\repository jenkins4eval/maven-windows-jdk-8 cmd /c mvn -B -s c:\wstmp\settings-azure.xml -f \ws --show-version clean verify
             /$)
         }
     }

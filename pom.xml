@@ -8,9 +8,10 @@
         <relativePath />
     </parent>
     <artifactId>log-cli</artifactId>
-    <version>1.2-SNAPSHOT</version>
+    <version>${changelist}</version>
     <packaging>hpi</packaging>
     <properties>
+        <changelist>999999-SNAPSHOT</changelist>
         <jenkins.version>2.7.3</jenkins.version>
         <java.level>7</java.level>
     </properties>
@@ -27,7 +28,7 @@
         <connection>scm:git:git://github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
         <developerConnection>scm:git:git@github.com:jenkinsci/${project.artifactId}-plugin.git</developerConnection>
         <url>https://github.com/jenkinsci/${project.artifactId}-plugin</url>
-      <tag>HEAD</tag>
+      <tag>${scmTag}</tag>
   </scm>
     <repositories>
         <repository>
@@ -48,4 +49,24 @@
             <version>1.0</version>
         </dependency>
     </dependencies>
+    <profiles>
+        <profile> <!-- TODO perhaps move to plugin-pom -->
+            <id>block-MRP</id>
+            <activation>
+                <property>
+                    <name>changelist.format</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-release-plugin</artifactId>
+                        <configuration>
+                            <preparationGoals>not-set-up-for-MRP</preparationGoals>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

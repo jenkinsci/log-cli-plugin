@@ -6,10 +6,4 @@ For detailed usage information, go to `http://jenkins/cli/command/tail-log` afte
 
 # Releasing
 
-As per [instructions](https://github.com/jenkinsci/incrementals-tools/#superseding-maven-releases):
-
-```bash
-mvn -Dset.changelist -DaltDeploymentRepository=maven.jenkins-ci.org::default::https://repo.jenkins-ci.org/releases/ clean deploy
-```
-
-then update [Releases](https://github.com/jenkinsci/log-cli-plugin/releases).
+Should be automatic upon push to `master`, except for now it is necessary to manually update [Releases](https://github.com/jenkinsci/log-cli-plugin/releases).

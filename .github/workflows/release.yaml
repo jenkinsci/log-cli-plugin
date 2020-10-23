@@ -8,11 +8,32 @@ jobs:
     steps:
     - name: Verify Jenkins status
       run: |
-        # May seem more efficient to just check $GITHUB_EVENT_PATH when $GITHUB_EVENT_NAME = status,
-        # but this has a race condition: an older commit goes green, the workflow is triggered,
-        # and then we deploy a newer commit! So verify the status for $GITHUB_SHA in all cases.
-        curl -H 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' -s $GITHUB_API_URL/repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/statuses | \
-          jq -e '.[] | select(.context == "continuous-integration/jenkins/branch" and .state == "success")'
+        set -x
+        if [ $GITHUB_EVENT_NAME = status ]
+        then
+          state=$(jq -r .state < $GITHUB_EVENT_PATH)
+          context=$(jq -r .context < $GITHUB_EVENT_PATH)
+          sha=$(jq -r .sha < $GITHUB_EVENT_PATH)
+          if [ $state = success -a $context = continuous-integration/jenkins/branch -a $sha = $GITHUB_SHA ]
+          then
+            echo passing
+          else
+            echo not passing, or wrong status
+            exit 1
+          fi
+        elif [ $GITHUB_EVENT_NAME = workflow_dispatch ]
+        then
+          if curl -H 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' -s $GITHUB_API_URL/repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/statuses | jq -e '.[] | select(.context == "continuous-integration/jenkins/branch" and .state == "success")'
+          then
+            echo passing
+          else
+            echo not passing
+            exit 1
+          fi
+        else
+          echo unknown event type $GITHUB_EVENT_NAME
+          exit 1
+        fi
     - name: Check out
       uses: actions/checkout@v1
     - name: Set up JDK 8

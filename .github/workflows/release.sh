@@ -6,4 +6,4 @@ mvn -B -V -s .github/workflows/settings.xml -ntp -Dstyle.color=always -Dset.chan
 version=$(mvn -B -ntp -Dset.changelist -Dexpression=project.version -q -DforceStdout help:evaluate)
 echo "::set-output name=version::$version"
 # TODO would be more legible with jo:
-curl -H "Authorization: Bearer $GITHUB_TOKEN" -s -d '{"refs":"refs/tags/'$version'","sha":"'$GITHUB_SHA'"}' $GITHUB_API_URL/repos/$GITHUB_REPOSITORY/git/refs
+curl -H "Authorization: Bearer $GITHUB_TOKEN" -s -d '{"ref":"refs/tags/'$version'","sha":"'$GITHUB_SHA'"}' $GITHUB_API_URL/repos/$GITHUB_REPOSITORY/git/refs

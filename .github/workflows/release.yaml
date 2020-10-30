@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
     - name: Verify Jenkins status
       run: |
@@ -41,6 +41,16 @@ jobs:
       with:
         java-version: 1.8
     - name: Release
+      id: release
       run: bash .github/workflows/release.sh
       env:
         ARTIFACTORY_TOKEN: ${{ secrets.ARTIFACTORY_TOKEN }}
+    - name: Release notes
+      uses: release-drafter/release-drafter@v5
+      if: ${{ github.ref == 'refs/heads/master' }}
+      with:
+        name: ${{ steps.release.outputs.version }}
+        version: ${{ steps.release.outputs.version }}
+        publish: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

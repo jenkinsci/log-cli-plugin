@@ -46,12 +46,3 @@ jobs:
       env:
         ARTIFACTORY_TOKEN: ${{ secrets.ARTIFACTORY_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: Release notes
-      uses: release-drafter/release-drafter@v5
-      if: ${{ github.ref == 'refs/heads/master' }}
-      with:
-        name: ${{ steps.release.outputs.version }}
-        version: ${{ steps.release.outputs.version }}
-        publish: true
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

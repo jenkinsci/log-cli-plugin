@@ -3,7 +3,7 @@
     <servers>
         <server>
             <id>maven.jenkins-ci.org</id>
-            <username>jglick_bot</username>
+            <username>${env.ARTIFACTORY_USERNAME}</username>
             <password>${env.ARTIFACTORY_TOKEN}</password>
         </server>
     </servers>

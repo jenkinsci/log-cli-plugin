@@ -23,7 +23,7 @@ jobs:
           fi
         elif [ $GITHUB_EVENT_NAME = workflow_dispatch ]
         then
-          if curl -H 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' -s $GITHUB_API_URL/repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/statuses | jq -e '.[] | select(.context == "continuous-integration/jenkins/branch" and .state == "success")'
+          if gh api /repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/statuses | jq -e '.[] | select(.context == "continuous-integration/jenkins/branch" and .state == "success")'
           then
             echo passing
           else
@@ -34,6 +34,8 @@ jobs:
           echo unknown event type $GITHUB_EVENT_NAME
           exit 1
         fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Check out
       uses: actions/checkout@v1
     - name: Set up JDK 8

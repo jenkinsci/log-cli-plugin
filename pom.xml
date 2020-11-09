@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.jenkins-ci.plugins</groupId>
         <artifactId>plugin</artifactId>
-        <version>4.13</version>
+        <version>4.14-SNAPSHOT</version> <!-- TODO https://github.com/jenkinsci/plugin-pom/pull/375 -->
         <relativePath />
     </parent>
     <artifactId>log-cli</artifactId>
@@ -49,24 +49,4 @@
             <version>1.0</version>
         </dependency>
     </dependencies>
-    <profiles>
-        <profile> <!-- TODO perhaps move to plugin-pom -->
-            <id>block-MRP</id>
-            <activation>
-                <property>
-                    <name>changelist.format</name>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-release-plugin</artifactId>
-                        <configuration>
-                            <preparationGoals>not-set-up-for-MRP</preparationGoals>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 </project>

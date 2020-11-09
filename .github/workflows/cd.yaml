@@ -3,7 +3,7 @@ on:
   status:
   workflow_dispatch:
 jobs:
-  build:
+  cd:
     runs-on: ubuntu-latest
     steps:
     - name: Verify CI status

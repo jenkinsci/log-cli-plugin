@@ -1,0 +1,24 @@
+name: cd
+on:
+  status:
+  workflow_dispatch:
+jobs:
+  cd:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Verify CI status
+      uses: jglick/verify-ci-status-action@v1
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Set up JDK 8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Release
+      uses: jglick/jenkins-maven-cd-action@v1
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
+        ARTIFACTORY_TOKEN: ${{ secrets.ARTIFACTORY_TOKEN }}

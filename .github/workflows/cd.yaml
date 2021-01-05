@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Verify CI status
-      uses: jglick/verify-ci-status-action@master
+      uses: jenkins-infra/verify-ci-status-action@master
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Release Drafter
@@ -29,7 +29,7 @@ jobs:
       with:
         java-version: 1.8
     - name: Release
-      uses: jglick/jenkins-maven-cd-action@master
+      uses: jenkins-infra/jenkins-maven-cd-action@master
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}

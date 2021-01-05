@@ -5,7 +5,7 @@ on:
     types:
     - completed
 jobs:
-  cd:
+  deploy:
     runs-on: ubuntu-latest
     steps:
     - name: Verify CI status

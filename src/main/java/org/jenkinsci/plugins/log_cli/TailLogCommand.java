@@ -28,6 +28,9 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.Extension;
 import hudson.cli.CLICommand;
 import io.jenkins.lib.support_log_formatter.SupportLogFormatter;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -39,7 +42,7 @@ import org.kohsuke.args4j.Option;
 
 @Extension public class TailLogCommand extends CLICommand {
 
-    @Argument(metaVar="NAME", required=true, usage="Logger name to record; for example: hudson.model") public String name;
+    @Argument(metaVar="NAME", required=true, usage="Logger name(s) to record; for example: hudson.model", multiValued=true) public List<String> names;
 
     @Option(name="-l", usage="Level such as FINE.") public String level = "ALL";
 
@@ -49,9 +52,8 @@ import org.kohsuke.args4j.Option;
 
     @SuppressFBWarnings(value="LG_LOST_LOGGER_DUE_TO_WEAK_REFERENCE", justification="Holding a local variable the whole time.")
     @Override protected int run() throws Exception {
-        Jenkins.getInstance().checkPermission(Jenkins.ADMINISTER);
-        Logger logger = Logger.getLogger(name);
-        Level oldLevel = logger.getLevel();
+        Jenkins.get().checkPermission(Jenkins.ADMINISTER);
+        Map<Logger, Level> oldLevels = new HashMap<>();
         Handler handler = new StreamHandler(stdout, new SupportLogFormatter()) {
             @Override public synchronized void publish(LogRecord record) {
                 super.publish(record);
@@ -59,17 +61,23 @@ import org.kohsuke.args4j.Option;
             }
         };
         Level logLevel = Level.parse(level);
-        logger.setLevel(logLevel);
         handler.setLevel(logLevel);
-        logger.addHandler(handler);
+        for (String name : names) {
+            Logger logger = Logger.getLogger(name);
+            oldLevels.put(logger, logger.getLevel());
+            logger.setLevel(logLevel);
+            logger.addHandler(handler);
+        }
         try {
             stderr.println("Waiting for messages or interruption");
             Thread.sleep(Long.MAX_VALUE);
         } catch (InterruptedException x) {
             stderr.println("Stopped.");
         } finally {
-            logger.removeHandler(handler);
-            logger.setLevel(oldLevel);
+            for (Map.Entry<Logger, Level> entry : oldLevels.entrySet()) {
+                entry.getKey().removeHandler(handler);
+                entry.getKey().setLevel(entry.getValue());
+            }
         }
         return 0;
     }

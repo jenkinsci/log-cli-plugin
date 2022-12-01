@@ -1,1 +1,1 @@
-buildPlugin(platforms: ['maven'])
+buildPlugin(platforms: ['maven-11'])

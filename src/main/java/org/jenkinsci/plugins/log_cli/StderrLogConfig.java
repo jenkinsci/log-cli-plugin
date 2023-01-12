@@ -135,7 +135,7 @@ import org.kohsuke.stapler.StaplerRequest;
         for (Computer c : Jenkins.get().getComputers()) {
             VirtualChannel channel = c.getChannel();
             if (channel instanceof Channel) { // i.e., not MasterComputer
-                LOGGER.info(() -> "Registering " + targets + " on existing agent " + c.getName());
+                LOGGER.fine(() -> "Registering " + targets + " on existing agent " + c.getName());
                 try {
                     channel.call(new Register(targets));
                 } catch (IOException | InterruptedException x) {
@@ -150,7 +150,7 @@ import org.kohsuke.stapler.StaplerRequest;
         @Override public void preOnline(Computer c, Channel channel, FilePath root, TaskListener listener) throws IOException, InterruptedException {
             List<Target> targets = ExtensionList.lookupSingleton(StderrLogConfig.class).targets;
             if (targets != null && !targets.isEmpty()) {
-                LOGGER.info(() -> "Registering " + targets + " on new agent " + c.getName());
+                LOGGER.fine(() -> "Registering " + targets + " on new agent " + c.getName());
                 channel.call(new Register(targets));
             }
         }
@@ -181,7 +181,7 @@ import org.kohsuke.stapler.StaplerRequest;
             } else {
                 for (var entry : oldLevels.entrySet()) {
                     var logger = entry.getKey();
-                    logger.info(() -> "Deregistered logger on " + logger.getName());
+                    logger.fine(() -> "Deregistered logger on " + logger.getName());
                     logger.removeHandler(handler);
                     logger.setLevel(entry.getValue());
                 }
@@ -197,7 +197,7 @@ import org.kohsuke.stapler.StaplerRequest;
                 oldLevels.put(logger, logger.getLevel());
                 logger.setLevel(level);
                 logger.addHandler(handler);
-                logger.info(() -> "Registered logger on " + target.name + "@" + level);
+                logger.fine(() -> "Registered logger on " + target.name + "@" + level);
             }
             handler.setLevel(finest);
             return null;

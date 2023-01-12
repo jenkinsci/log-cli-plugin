@@ -107,6 +107,10 @@ import org.kohsuke.stapler.StaplerRequest;
 
     public StderrLogConfig() {
         load();
+    }
+
+    @Override public void load() {
+        super.load();
         apply();
     }
 

@@ -43,11 +43,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
-import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-import java.util.logging.StreamHandler;
 import jenkins.model.GlobalConfiguration;
 import jenkins.model.Jenkins;
 import jenkins.security.MasterToSlaveCallable;
@@ -169,12 +168,8 @@ import org.kohsuke.stapler.StaplerRequest;
 
         @Override public Void call() {
             if (handler == null) {
-                handler = new StreamHandler(System.err, new SupportLogFormatter()) {
-                    @Override public synchronized void publish(LogRecord record) {
-                        super.publish(record);
-                        flush();
-                    }
-                };
+                handler = new ConsoleHandler();
+                handler.setFormatter(new SupportLogFormatter());
             }
             if (oldLevels == null) {
                 oldLevels = new HashMap<>();

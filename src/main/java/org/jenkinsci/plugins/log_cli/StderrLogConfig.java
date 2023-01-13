@@ -52,6 +52,7 @@ import jenkins.model.GlobalConfiguration;
 import jenkins.model.Jenkins;
 import jenkins.security.MasterToSlaveCallable;
 import net.sf.json.JSONObject;
+import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.QueryParameter;
@@ -60,6 +61,7 @@ import org.kohsuke.stapler.StaplerRequest;
 /**
  * Configures loggers to print to stderr.
  */
+@Symbol("stderrLog")
 @Extension public final class StderrLogConfig extends GlobalConfiguration {
 
     private static final Logger LOGGER = Logger.getLogger(StderrLogConfig.class.getName());

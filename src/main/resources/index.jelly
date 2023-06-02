@@ -1,4 +1,4 @@
 <?jelly escape-by-default='true'?>
 <div>
-    Adds a CLI command to tail a Jenkins logger.
+    Adds a CLI command to tail a Jenkins logger, and a way to stream logs to system standard error.
 </div>

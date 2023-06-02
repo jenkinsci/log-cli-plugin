@@ -15,7 +15,6 @@
         <jenkins.version>2.361.4</jenkins.version>
     </properties>
     <name>Log CLI Plugin</name>
-    <description>Adds a CLI command to tail a Jenkins logger.</description>
     <url>https://github.com/jenkinsci/${project.artifactId}-plugin</url>
     <licenses>
         <license>

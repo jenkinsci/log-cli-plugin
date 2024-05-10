@@ -29,6 +29,7 @@ import hudson.Extension;
 import hudson.ExtensionList;
 import hudson.FilePath;
 import hudson.model.AbstractDescribableImpl;
+import hudson.model.AutoCompletionCandidates;
 import hudson.model.Computer;
 import hudson.model.Descriptor;
 import hudson.model.TaskListener;
@@ -40,13 +41,20 @@ import hudson.util.ListBoxModel;
 import io.jenkins.lib.support_log_formatter.SupportLogFormatter;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import jenkins.model.GlobalConfiguration;
 import jenkins.model.Jenkins;
@@ -95,10 +103,54 @@ import org.kohsuke.stapler.StaplerRequest;
                 }
             }
 
-            // TODO completion on name based on known loggers, like in LogRecorder
-
             public ListBoxModel doFillLevelItems() {
                 return new ListBoxModel(new ListBoxModel.Option("CONFIG"), new ListBoxModel.Option("FINE"), new ListBoxModel.Option("FINER"), new ListBoxModel.Option("FINEST"));
+            }
+
+            // Adapted from LogRecorder (restricted):
+
+            public AutoCompletionCandidates doAutoCompleteName(@QueryParameter String value) {
+                if (value == null) {
+                    return new AutoCompletionCandidates();
+                }
+                var candidateNames = new LinkedHashSet<>(getAutoCompletionCandidates(Collections.list(LogManager.getLogManager().getLoggerNames())));
+                for (String part : value.split("[ ]+")) {
+                    var partCandidates = new HashSet<String>();
+                    String lowercaseValue = part.toLowerCase(Locale.ENGLISH);
+                    for (String loggerName : candidateNames) {
+                        if (loggerName.toLowerCase(Locale.ENGLISH).contains(lowercaseValue)) {
+                            partCandidates.add(loggerName);
+                        }
+                    }
+                    candidateNames.retainAll(partCandidates);
+                }
+                var candidates = new AutoCompletionCandidates();
+                candidates.add(candidateNames.toArray(String[]::new));
+                return candidates;
+            }
+
+            private static Set<String> getAutoCompletionCandidates(List<String> loggerNamesList) {
+                var loggerNames = new HashSet<>(loggerNamesList);
+                var seenPrefixes = new HashMap<String, Integer>();
+                var relevantPrefixes = new TreeSet<String>();
+                for (String loggerName : loggerNames) {
+                    String[] loggerNameParts = loggerName.split("[.]");
+                    String longerPrefix = null;
+                    for (int i = loggerNameParts.length; i > 0; i--) {
+                        String loggerNamePrefix = String.join(".", Arrays.copyOf(loggerNameParts, i));
+                        seenPrefixes.put(loggerNamePrefix, seenPrefixes.getOrDefault(loggerNamePrefix, 0) + 1);
+                        if (longerPrefix == null) {
+                            relevantPrefixes.add(loggerNamePrefix);
+                            longerPrefix = loggerNamePrefix;
+                            continue;
+                        }
+                        if (seenPrefixes.get(loggerNamePrefix) > seenPrefixes.get(longerPrefix)) {
+                            relevantPrefixes.add(loggerNamePrefix);
+                        }
+                        longerPrefix = loggerNamePrefix;
+                    }
+                }
+                return relevantPrefixes;
             }
 
         }

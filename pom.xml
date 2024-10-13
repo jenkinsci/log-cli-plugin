@@ -4,8 +4,8 @@
     <parent>
         <groupId>org.jenkins-ci.plugins</groupId>
         <artifactId>plugin</artifactId>
-        <version>5.0</version>
-        <relativePath />
+        <version>5.1</version>
+        <relativePath/>
     </parent>
     <artifactId>log-cli</artifactId>
     <version>${changelist}</version>

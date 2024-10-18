@@ -110,6 +110,7 @@ import org.kohsuke.stapler.StaplerRequest2;
             // Adapted from LogRecorder (restricted):
 
             public AutoCompletionCandidates doAutoCompleteName(@QueryParameter String value) {
+                Jenkins.get().checkPermission(Jenkins.ADMINISTER);
                 if (value == null) {
                     return new AutoCompletionCandidates();
                 }

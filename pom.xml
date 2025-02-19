@@ -4,15 +4,15 @@
     <parent>
         <groupId>org.jenkins-ci.plugins</groupId>
         <artifactId>plugin</artifactId>
-        <version>5.6</version>
-        <relativePath/>
+        <version>5.7</version>
+        <relativePath />
     </parent>
     <artifactId>log-cli</artifactId>
     <version>${changelist}</version>
     <packaging>hpi</packaging>
     <properties>
         <changelist>999999-SNAPSHOT</changelist>
-        <jenkins.version>2.479</jenkins.version>
+        <jenkins.version>2.479.1</jenkins.version>
     </properties>
     <name>Log CLI Plugin</name>
     <url>https://github.com/jenkinsci/${project.artifactId}-plugin</url>
@@ -23,7 +23,7 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:git:git://github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
+        <connection>scm:git:https://github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
         <developerConnection>scm:git:git@github.com:jenkinsci/${project.artifactId}-plugin.git</developerConnection>
         <url>https://github.com/jenkinsci/${project.artifactId}-plugin</url>
         <tag>${scmTag}</tag>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+  <Match>
+    <!-- TODO cannot suppress with annotation or get complaint about US_USELESS_SUPPRESSION_ON_METHOD -->
+    <And>
+      <Bug pattern="LI_LAZY_INIT_UPDATE_STATIC"/>
+      <Class name="org.jenkinsci.plugins.log_cli.StderrLogConfig$Register"/>
+      <Method name="call"/>
+    </And>
+  </Match>
+</FindBugsFilter>

@@ -24,7 +24,6 @@
 
 package org.jenkinsci.plugins.log_cli;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.Extension;
 import hudson.ExtensionList;
 import hudson.FilePath;
@@ -222,7 +221,6 @@ import org.kohsuke.stapler.StaplerRequest2;
             this.targets = targets != null ? targets : Collections.emptyList();
         }
 
-        @SuppressFBWarnings(value = "LI_LAZY_INIT_UPDATE_STATIC", justification = "really meant to manage static state this way")
         @Override public Void call() {
             if (handler == null) {
                 handler = new ConsoleHandler();
